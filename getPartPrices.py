@@ -88,9 +88,9 @@ def extract_inventory_levels(df):
                 if isinstance(cell_val, str) and "Item Total" in cell_val:
                     inv_value = df.iloc[j, 10]
                     try:
-                        inv_level = float(inv_value)
+                        inv_level = int(inv_value)
                     except (ValueError, TypeError):
-                        inv_level = 0.0
+                        inv_level = 0
                     inventory_levels[str(part_number).strip()] = inv_level
                     break  
     return inventory_levels
