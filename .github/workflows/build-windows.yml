@@ -1,4 +1,4 @@
-name: Build Windows Executable
+name: Build and Release Windows Executable
 
 on:
   push:
@@ -28,19 +28,20 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: "v${{ github.run_number }}"
-          release_name: "Build #${{ github.run_number }}"
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "Build #${{ github.run_number }}"
+          body: "Automated release from GitHub Actions."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          tag_name: "v${{ github.run_number }}"
           asset_path: dist/getPartPrices.exe
           asset_name: getPartPrices.exe
           asset_content_type: application/octet-stream
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
