@@ -29,22 +29,13 @@ jobs:
       - name: Build executable
         run: pyinstaller --onefile --windowed getPartPrices.py
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release and Upload Asset
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: "v${{ github.run_number }}"
           name: "Build #${{ github.run_number }}"
           body: "Automated release from GitHub Actions."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: "v${{ github.run_number }}"
-          asset_path: dist/getPartPrices.exe
-          asset_name: getPartPrices.exe
-          asset_content_type: application/octet-stream
+          files: dist/getPartPrices.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
