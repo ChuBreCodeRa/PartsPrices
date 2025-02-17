@@ -8,7 +8,19 @@ import os
 import datetime
 
 def extract_part_numbers(input_text):
-    return re.findall(r'\b\d{6}\b|\b\d{10}\b', input_text)
+    """Extract valid and invalid part numbers from input text."""
+    # Get all number sequences that are not whitespace
+    all_numbers = re.findall(r'\b\d+\b', input_text)
+    valid_numbers = []
+    invalid_numbers = []
+    
+    for num in all_numbers:
+        if len(num) == 6 or len(num) == 10:
+            valid_numbers.append(num)
+        else:
+            invalid_numbers.append(num)
+    
+    return valid_numbers, invalid_numbers
 
 def find_price_list_file(base_path, file_prefix):
     """Find the latest file in the directory that starts with the given prefix."""
@@ -99,12 +111,23 @@ def search_parts():
     region = region_var.get().lower()
     pricing_type = pricing_type_var.get().lower()
     input_text = part_numbers_input.get("1.0", tk.END)
-    # Convert to set to remove duplicates while maintaining order
-    part_numbers_from_input = list(dict.fromkeys(extract_part_numbers(input_text)))
+    
+    # Get both valid and invalid part numbers
+    valid_numbers, invalid_numbers = extract_part_numbers(input_text)
+    
+    # Remove duplicates while maintaining order
+    part_numbers_from_input = list(dict.fromkeys(valid_numbers))
+    invalid_numbers = list(dict.fromkeys(invalid_numbers))
 
-    # If no part numbers were entered, show a warning and return
+    # Show warning for invalid part numbers if any exist
+    if invalid_numbers:
+        error_msg = "The following part numbers are invalid (must be 6 or 10 digits):\n"
+        error_msg += "\n".join(invalid_numbers)
+        messagebox.showwarning("Invalid Part Numbers", error_msg)
+
+    # If no valid part numbers were entered, show a warning and return
     if not part_numbers_from_input:
-        messagebox.showwarning("No Parts Entered", "Please enter at least one part number.")
+        messagebox.showwarning("No Valid Parts Entered", "Please enter at least one valid part number (6 or 10 digits).")
         return
     
     # Load the price list and inventory data
