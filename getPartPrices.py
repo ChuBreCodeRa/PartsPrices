@@ -99,7 +99,8 @@ def search_parts():
     region = region_var.get().lower()
     pricing_type = pricing_type_var.get().lower()
     input_text = part_numbers_input.get("1.0", tk.END)
-    part_numbers_from_input = extract_part_numbers(input_text)
+    # Convert to set to remove duplicates while maintaining order
+    part_numbers_from_input = list(dict.fromkeys(extract_part_numbers(input_text)))
 
     # If no part numbers were entered, show a warning and return
     if not part_numbers_from_input:
