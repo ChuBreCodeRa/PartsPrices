@@ -173,7 +173,7 @@ def search_parts():
 # GUI Setup
 root = tk.Tk()
 root.title("Part Inventory Lookup")
-root.geometry("800x650") 
+root.geometry("900x800") 
 
 # Set a monospaced font for better alignment
 monospace_font = tkFont.Font(family="Courier", size=10)
@@ -195,7 +195,7 @@ pricing_type_menu.grid(row=1, column=1, padx=10, pady=10, sticky="w")
 # Part Numbers Input
 part_numbers_label = tk.Label(root, text="Enter Part Numbers:")
 part_numbers_label.grid(row=2, column=0, padx=10, pady=10, sticky="nw")
-part_numbers_input = scrolledtext.ScrolledText(root, width=50, height=10, wrap=tk.WORD)
+part_numbers_input = tk.Text(root, width=50, height=10, wrap=tk.WORD)
 part_numbers_input.grid(row=2, column=1, padx=10, pady=10)
 
 # Search Button
@@ -207,8 +207,8 @@ last_modified_label_var = tk.StringVar(value="Inventory Last Modified: Not check
 last_modified_label = tk.Label(root, textvariable=last_modified_label_var)
 last_modified_label.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="w")
 
-# Output Display (copyable text area)
-output_display = scrolledtext.ScrolledText(root, width=100, height=15, font=monospace_font)
+# Output Display
+output_display = tk.Text(root, width=100, height=15, font=monospace_font)
 output_display.grid(row=5, column=0, columnspan=3, padx=10, pady=10)
 
 # Stock Info Display (non-copyable - using a Label)
